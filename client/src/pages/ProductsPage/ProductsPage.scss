@@ -1,5 +1,7 @@
 .products-container{
     width: 100%;
+  font-family: "Jost", sans-serif;
+
 }
 
 .products-header-image{
@@ -11,7 +13,8 @@
 
 .header-sub-container{
     padding: 100px 0 100px 0;
-    text-align: center;
+    text-align: center; 
+
 
 }
 
@@ -24,7 +27,10 @@
     margin-left: -15px;
 }
 .products-info-container{
-    padding: 100px 0 100px 0;   
+    padding: 40px 0;   
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     text-align: center;
     background-color: rgba(0.0,0,0.0,0.6);
     .page-title{
@@ -33,7 +39,29 @@
         line-height: 70px;
         font-weight: 500;
         text-transform: uppercase;
-        margin-bottom: 15px;
+        margin: 0;
         color: #fff;
     }
 }
+
+
+@media screen and  (max-width: 800px) {
+    .products-info-container{
+        padding: 30px 0;   
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
+        text-align: center;
+        background-color: rgba(0.0,0,0.0,0.6);
+        .page-title{
+            z-index: 5;
+            font-size: 55px;
+            line-height: 70px;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+    }
+    }

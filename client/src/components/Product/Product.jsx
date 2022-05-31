@@ -1,5 +1,6 @@
 import React from "react";
 import { BsSearch } from "react-icons/bs";
+import { Link } from "react-router-dom";
 import "./Product.scss";
 
 const Product = () => {
@@ -12,9 +13,9 @@ const Product = () => {
         />
         <div className="info">
           <div className="search-icon-container">
-            <a href="">
+            <Link to="/product/hello-world">
               <BsSearch />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
