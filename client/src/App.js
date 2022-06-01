@@ -1,6 +1,6 @@
 
 import "./App.css";
-import { BrowserRouter, Routes, Route, Link, Outlet, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route,  Outlet, Navigate } from "react-router-dom";
 import {Navbar, Footer} from "./components";
 import Home from "./pages/Home.jsx";
 import ProductsPage from "./pages/ProductsPage/ProductsPage";

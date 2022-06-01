@@ -6,9 +6,9 @@ import bodyParser from "body-parser";
 
 dotenv.config();
 
-// import cartRoute from "./src/routes/cart.js";
+import cartRoute from "./src/routes/cart.js";
 import userRoute from "./src/routes/user.js";
-// import ProductRoute from "./src/routes/product.js";
+import ProductRoute from "./src/routes/product.js";
 
 
 const app = express();
@@ -18,6 +18,8 @@ const port =  process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use("/",userRoute);
+app.use("/",ProductRoute);
+app.use("/",cartRoute);
 
 
 

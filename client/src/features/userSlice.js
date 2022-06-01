@@ -3,7 +3,6 @@ import axios from "axios";
 import { publicRequest } from "../api/shopApi.js";
 
 export const register = createAsyncThunk("/register", async(user, {rejectWithValue}) => {
-  console.log(user);
     try {
       const {data} = await axios.post("http://localhost:3001/register", user);    
       return (data);

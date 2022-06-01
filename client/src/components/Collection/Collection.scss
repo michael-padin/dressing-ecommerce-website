@@ -1,6 +1,5 @@
 .collection-wrapper {
   padding: 87px 0 100px;
-  width: 100%;
 }
 
 .collection-highlight {
@@ -60,7 +59,7 @@
 }
 
 .collection-container {
-  width: 1140px;
+  max-width: 1140px;
   margin: auto;
 }
 
@@ -76,64 +75,83 @@
     align-items: center;
     justify-content: center;
 
-    .img1-container {
-      border-radius: 40px;
-      background-color: #fbab7e;
-      background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
-      height: 660px;
-      width: 540px;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-    .img2-container {
-      border-radius: 40px;
-      background-color: #ff9a8b;
-      background-image: linear-gradient(
-        90deg,
-        #ff9a8b 0%,
-        #ff6a88 55%,
-        #ff99ac 100%
-      );
-      height: 660px;
-      width: 540px;
-      margin-top: 4rem;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-    }
+   
   }
 }
 
-/* 
-@media screen and (min-width: 1200px) {
-  .collection-container {
-    max-width: 1140px;
+.img1-container {
+  border-radius: 40px;
+  background-color: #fbab7e;
+  background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
+  height: 660px;
+  width: 540px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
-@media screen and (min-width: 992px) {
-  .collection-container {
-    max-width: 960px;
+.img2-container {
+  border-radius: 40px;
+  background-color: #ff9a8b;
+  background-image: linear-gradient(
+    90deg,
+    #ff9a8b 0%,
+    #ff6a88 55%,
+    #ff99ac 100%
+  );
+  height: 660px;
+  width: 540px;
+  margin-top: 4rem;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 }
-@media screen and (min-width: 768px) {
+
+@media screen and (max-width: 800px) {
+  .collection-wrapper{
+    padding: 10px;
+  }
+
+  .collection-highlight {
+    display: -ms-flexbox;
+   flex-direction: column;
+    margin: 0;
+  }
+
   .collection-sub-container {
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-  .collection-container {
-    max-width: 720px;
-  }
-}
+    max-width: 100%;  
 
-@media screen and (min-width: 576px) {
-  .collection-container {
-    max-width: 540px;
+    .collection-item {
+      
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+     
+    }
+  }
+
+  .img1-container {
+    border-radius: 40px;
+    
+    height: 400px;
+    width: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .img2-container {
+    height: 400px;
+    margin-top: 4rem;
+   
   }
 }
- */

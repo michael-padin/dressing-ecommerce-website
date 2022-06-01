@@ -5,19 +5,21 @@ const router = express.Router();
 import { addCart, updateCart, deleteCart, getAll } from '../controllers/cart.js';
 
 // middleware
-import { auth} from "../middleware/auth.js";
+// import { auth} from "../middleware/auth.js";
 
 // add cart
-router.post("/", auth, addCart);
+router.post("/cart",addCart);
+// add cart
+router.get("/cart",  addCart);
 
 // get user Cart
-router.put("/find/:userId", auth, deleteCart);
+router.put("/find/:userId", deleteCart);
 
 // update cart
-router.put("/:id", auth, updateCart);
+router.put("/:id",  updateCart);
 
 // delete cart
-router.put("/:id", auth, deleteCart);
+router.put("/:id",  deleteCart);
 
 
 

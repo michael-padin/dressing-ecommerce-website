@@ -1,20 +1,67 @@
-import React from "react";
-import {
-  AiFillStar,
-  AiOutlineStar,
-  AiOutlineMinus,
-  AiOutlinePlus,
-  AiOutlineArrowLeft,
-} from "react-icons/ai";
+import React, { useEffect, useState } from "react";
+import {AiFillStar,AiOutlineStar,AiOutlineMinus,AiOutlinePlus,} from "react-icons/ai";
 import "./ProductPage.scss";
-import collection1 from "../../assets/collection1.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {fetchAsyncSelectedProduct,refreshSelectedProduct,} from "../../features/productSlice.js";
+import { addAsyncProduct, addProduct, addQuantity } from "../../features/cartSlice.js";
 
 const ProductPage = () => {
-  const decQty = () => {};
-  const incQty = () => {};
-  const handleBuyNow = () => {};
-  const onAdd = (product, qty) => {};
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const {currentUser} = useSelector((state) => state.user)
+  const { selectedProduct } = useSelector((state) => state.products);
+  const { products } = useSelector((state) => state.cart);
+
+  const productId = location.pathname.split("/")[2];
+
+  const [quantity, setQuantity] = useState(1);
+  const [active, setActive] = useState('');
+  const [size, setSize] = useState('');
+  const [userProduct, setUserProduct] = useState('');
+
+  useEffect(() => {
+    dispatch(fetchAsyncSelectedProduct(productId));
+    return () => {
+      dispatch(refreshSelectedProduct());
+    };
+  }, [productId, dispatch]);
+
+  useEffect(() => {
+    setUserProduct(() => ({...selectedProduct, size, quantity}))
+  }, [selectedProduct, size, quantity]);
+
+  const getProducts = () => {
+    const totalPrice = products?.map((product) => product.totalPrice).reduce((a, b) => a + b, 0);
+    // const product = products?.find((product) =>product._id === userProduct._id &&product.size === userProduct.size);
+
+    // if (product) {
+    //   const index = products.findIndex((product) =>product._id === userProduct._id &&product.size === userProduct.size);
+    //   dispatch(addQuantity({ quantity, index, totalPrice }));
+    // } else {
+    //   dispatch(addProduct({ ...userProduct, totalPrice }));
+      dispatch(addAsyncProduct({ product: userProduct, totalPrice, userId: currentUser._id }));
+    // }
+  };
+
+  const handleQuantity = (type) => {
+      if (type === "increase"){
+        setQuantity(quantity +1);
+      } else if (type === 'decrease') {
+        quantity > 1 && setQuantity(quantity - 1);
+      }
+  }
+  const handleSize = (size) => {
+     setActive(size)
+     setSize(size)
+     console.log(size);
+  }
+
+  const handleBuyNow = () => {
+    getProducts();
+    
+  };
+
 
   return (
     <>
@@ -22,26 +69,25 @@ const ProductPage = () => {
         <div className="page-title-container">
           <div className="products-heading-container">
             <div className="products-info-container">
-              <h2 className="page-title">HOME</h2>
+              <h2 className="page-title active">{selectedProduct.title}</h2>
               <ul>
-                <li><Link to = "/home">HOme</Link></li>
+                <li><Link to="/" className="link-items">Home</Link></li>
                 <div className="separator"></div>
-                <li><Link to = "/products">products</Link></li>
+                <li><Link to="/products" className="link-items">products</Link></li>
                 <div className="separator"></div>
-                <li><Link to = "/">current product</Link></li>
+                <li><Link to={`/product/${selectedProduct._id}`}className="active">{selectedProduct.title}</Link></li>
               </ul>
             </div>
           </div>
         </div>
       </div>
       <div className="product-detail-container">
-       
         <div className="product-image-container">
-          <img src={collection1} className="product-detail-image" />
+          <img src={selectedProduct.img} className="product-detail-image" alt="women"/>
         </div>
 
         <div className="product-detail-desc">
-          <h1>Manok ni san pedro</h1>
+          <h1>{selectedProduct.title}</h1>
           <div className="reviews">
             <div>
               <AiFillStar />
@@ -50,36 +96,40 @@ const ProductPage = () => {
               <AiFillStar />
               <AiOutlineStar />
             </div>
-            <p>(20)</p>
+            <p>{selectedProduct.price}</p>
           </div>
           <h4>Details: </h4>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
-          <p className="price">${11}</p>
+          <p>{selectedProduct.desc}</p>
+          <p className="price">${selectedProduct.price}.00</p>
+          <div className="size">
+            <h3>Size:</h3>
+            <div className="size-container">
+              {
+                selectedProduct?.size?.map((size, index) => (
+                <div className={`${active === size && 'active-size'} sizes`} key = {index} onClick={() => handleSize(size)}>
+                  <p>{size}</p>
+                </div>
+                ))
+                }
+            </div>
+          </div>
           <div className="quantity">
             <h3>Quantity:</h3>
             <p className="quantity-desc">
-              <span className="minus" onClick={decQty}>
+              <button className="minus" onClick={()=>handleQuantity('decrease')}>
                 <AiOutlineMinus />
-              </span>
-              <span className="num">1</span>
-              <span className="plus" onClick={incQty}>
+              </button>
+              <span className="num">{quantity}</span>
+              <button className="plus" onClick={()=>handleQuantity('increase')}>
                 <AiOutlinePlus />
-              </span>
+              </button>
             </p>
           </div>
           <div className="buttons">
             <button
               type="button"
               className="add-to-cart"
-              onClick={() => onAdd("sdfsdfsdf", 1)}
+              onClick={handleBuyNow}
             >
               Add to Cart
             </button>

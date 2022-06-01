@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { login, register } from "../../features/userSlice.js";
 import "./Form.scss";
 
 const Form = () => {
-  const dispatch = useDispatch();
+  const location = useLocation();
+  const {state } = location
+    const dispatch = useDispatch();
   const [formSignUpData, setFormSignUpData] = useState({ name: "", email:"", password: ""});
   const [formSignInData, setFormSignInData] = useState({email: "", password: ""})
   const [activeFilter, setActiveFilter] = useState("signin");
+
+  useEffect(() => {
+    if(state === 'signup'){
+      setActiveFilter('signup')
+    } else if (state === 'signin'){
+      setActiveFilter('signin')
+    }
+  },[state])
 
   const handleActive = (item) => {setActiveFilter(item)};
 
@@ -109,14 +120,13 @@ const Form = () => {
                   <input 
                   onChange = {handleSignUpInput}
                   value = {formSignUpData.password} 
-
                   name="password" 
                   type="password" 
                   id="login_password" 
                   placeholder="Enter your password" required/>
                 </div>
               </div>
-                <button className="form-submit-button">Sign in</button>
+                <button className="form-submit-button">Sign up</button>
 
               <div className="alternative-button">
                 <p>Already have an account? <span onClick={() => handleActive("signin")}>Sign in</span></p>

@@ -83,3 +83,10 @@
     line-height: 55px;
 }
 
+@media screen and (max-width: 800px) {
+    .feature-item {
+        text-align: center;
+        position: relative;
+        padding: 20px 22px ;}    
+
+}

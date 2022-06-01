@@ -17,7 +17,6 @@
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
-    width: 100%;
   }
 
   .footer-items-container {
@@ -48,12 +47,15 @@
       list-style-type: none;
 
       li {
-        text-transform: capitalize;
+        display: flex;
+        align-items: center;
+        text-transform: none;
         margin: 18px 0;
         transition: all 0.3s;
         font-weight: 400;
         font-size: 1rem;
         svg {
+          margin-right: 10px;
           color: #ff6280;
         }
         a {
@@ -80,10 +82,27 @@
     color: #fff;
 
     p {
-        padding: 10px;
+      padding: 10px;
       font-weight: 400;
       font-size: 14px;
       text-transform: initial;
+    }
+  }
+}
+
+@media screen and (max-width: 800px) {
+ 
+  .footer-area {
+    
+    .footer-row {
+      flex-direction: column;
+      margin: 0;
+      padding: 20px;
+    }
+  
+    .footer-items-container {
+      padding: 0;
+      max-width: 100%;
     }
   }
 }

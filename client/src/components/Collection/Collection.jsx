@@ -2,6 +2,7 @@ import React from "react";
 import "./Collection.scss";
 import collection1 from "../../assets/collection1.png";
 import collection2 from "../../assets/collection2.png";
+import { Link } from "react-router-dom";
 
 const Collection = () => {
   return (
@@ -11,15 +12,13 @@ const Collection = () => {
           <div className="collection-sub-container">
             <div className="collection-item">
               <div className="img1-container">
-                <a href="#"> 
                   <img src={collection1} alt="women" />
-                </a>
               </div>
               <div className="info-box">
                 <p className="catg">HOT ITEM</p>
                 <h4 className="offer-title">BUY 1 GET 1</h4>
                 <div className="btn-wrapper">
-                  <a href="#">SHOP NOW</a>
+                  <Link to="/products">SHOP NOW</Link>
                 </div>
               </div>
             </div>
@@ -28,15 +27,13 @@ const Collection = () => {
           <div className="collection-sub-container">
             <div className="collection-item">
               <div className="img2-container">
-                <a href="#">
                   <img src={collection2} alt="women fashion" />
-                </a>
               </div>
               <div className="info-box">  
                 <p className="catg">SALE ITEM</p>
                 <h4 className="offer-title">UP TO 70% OFF</h4>
                 <div className="btn-wrapper">
-                  <a href="#">SHOP NOW</a>
+                  <Link to="/products">SHOP NOW</Link>
                 </div>
               </div>
             </div>

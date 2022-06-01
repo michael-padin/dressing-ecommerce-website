@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Product from "../Product/Product.jsx";
+import {useDispatch, useSelector} from "react-redux";
 import "./Products.scss";
+import { fetchAsyncProducts, getAllProducts } from "../../features/productSlice.js";
+
+
 const Products = () => {
+  const products = useSelector(getAllProducts);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchAsyncProducts());
+  }, [dispatch]);
+  
 return (
     <>
       <div className="products-banner">
@@ -21,11 +31,11 @@ return (
             
           </div>
           <div className="products-container">
-              <Product/>
-              <Product/>
-              <Product/>
-              <Product/>
-              <Product/>
+            {
+              products?.slice(0, 5).map((product, idx) => (
+                <Product product = {product} key = {idx}/>
+              ))
+            }
           </div>
         </div>
       </div>

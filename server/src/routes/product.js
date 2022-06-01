@@ -6,15 +6,15 @@ import {createProduct, updateProduct, deleteProduct, getProduct, getProducts, ge
 
 
 // create product
-router.post("/",  createProduct);
+router.post("/products",  createProduct);
 
 // get all products
-router.get("/", getProducts);
+router.get("/products", getProducts);
 
 router.get("/search", getProductsBySearch);
 // api/products/search?query
 // get product
-router.get("/find/:id", getProduct);
+router.get("/products/find/:id", getProduct);
 
 // update products
 router.put("/:id",  updateProduct);

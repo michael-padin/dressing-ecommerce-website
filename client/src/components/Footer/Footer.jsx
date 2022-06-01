@@ -1,6 +1,8 @@
 import React from "react";
 import "./Footer.scss";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowRight, MdOutlinePlace } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
@@ -14,13 +16,13 @@ const Footer = () => {
                   Quick Links
                   <ul className="info-list">
                     <li>
-                      <a href="#"><MdKeyboardArrowRight/>Home</a>
+                      <Link to ="/"><MdKeyboardArrowRight/>Home</Link>
                     </li>
                     <li>
-                      <a href="#"><MdKeyboardArrowRight/>Terms & Conditions</a>
+                      <Link to ="/products"><MdKeyboardArrowRight/>Products</Link>
                     </li>
                     <li>
-                      <a href="#"><MdKeyboardArrowRight/>Privacy Policy</a>
+                      <Link to ="/cart"><MdKeyboardArrowRight />Products</Link>
                     </li>
                   </ul>
                 </h4>
@@ -29,39 +31,16 @@ const Footer = () => {
             <div className="footer-items-container">
               <div className="footer-widget">
                 <h4 className="widget-title">
-                  Quick Links
+                  Store info
                   <ul className="info-list">
-                    <li>
-                      <a href="#"><MdKeyboardArrowRight/>Home</a>
-                    </li>
-                    <li>
-                      <a href="#"><MdKeyboardArrowRight/>Terms & Conditions</a>
-                    </li>
-                    <li>
-                      <a href="#"><MdKeyboardArrowRight/>Privacy Policy</a>
-                    </li>
+                    <li><MdOutlinePlace/>Cebu, Philippines</li>
+                    <li><AiOutlinePhone/>+63908987547</li>
+                    <li><AiOutlineMail/>padinmichael201@gmail.com</li>
                   </ul>
                 </h4>
               </div>
             </div>
-            <div className="footer-items-container">
-              <div className="footer-widget">
-                <h4 className="widget-title">
-                  Quick Links
-                  <ul className="info-list">
-                    <li>
-                      <a href="#"><MdKeyboardArrowRight/>Home</a>
-                    </li>
-                    <li>
-                      <a href="#"><MdKeyboardArrowRight/>Terms & Conditions</a>
-                    </li>
-                    <li>
-                      <a href="#"><MdKeyboardArrowRight/>Privacy Policy</a>
-                    </li>
-                  </ul>
-                </h4>
-              </div>
-            </div>
+          
           </div>
         </div>
       </div>

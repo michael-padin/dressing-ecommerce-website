@@ -2,12 +2,17 @@ import Cart from "../models/Cart.js";
 
 // CREATE CART
 export const addCart = async (req, res) => {
-  try {
-    const addedCart = await Cart.create(req.body);
-    res.status(200).json(addedCart);
-  } catch (error) {
-    res.status(500).json(error);
-  }
+  console.log(req.body.userId )
+console.log(req.body.product._id);
+ const result =await Cart.find({userId: req.body.userId});
+  // const result1 = await Cart.find({product: {_id: req.body}})
+  console.log(result[0]._id);
+  // try { 
+  //   const addedCart = await Cart.create(req.body);
+  //   res.status(200).json(addedCart);
+  // } catch (error) {
+  //   res.status(500).json(error);
+  // }
 };
 
 //GET USER CART

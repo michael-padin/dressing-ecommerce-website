@@ -39,8 +39,9 @@
       background-color: rgba(0, 0, 0, 0.2);
       transition: all 0.5s ease;
       justify-content: center;
-
+      border-radius: 15px; 
       &:hover {
+         
         opacity: 1;
       }
 
@@ -97,4 +98,15 @@
         color: #ff6280;
     }
   }
+}
+
+
+@media screen and (max-width: 800px){
+  .products-container{
+    padding: 20px;
+  }
+
+  .product-wrapper .product-container {
+    height: auto;
+}
 }

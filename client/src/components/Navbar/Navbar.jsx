@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Navbar.scss";
-import logo from "../../assets/logo.png"
+import logo from "../../assets/logo.svg"
 import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { VscTriangleUp } from 'react-icons/vsc';
 import { VscAccount } from 'react-icons/vsc';
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+
+
 const Navbar = () => {
+  const {products} = useSelector((state) => state.cart)
+  const [modalClass , setModalClass  ] = useState(false);
+
+  const handleModal =  () => {
+    setModalClass(!modalClass);
+  }
+
   return (
     <nav className="navbar-area">
       <div className="container">
@@ -22,9 +34,23 @@ const Navbar = () => {
           ))}
         </ul>
         <div className="navbar-right">
-          <div className="cart-container"><Link to = "/cart"><AiOutlineShoppingCart/></Link></div>
-          <div className="account-container">
+          <div className="cart-container">
+            <Link to = "/cart"><AiOutlineShoppingCart/></Link>
+            <div className="cart-size">
+                <span>{products.length}</span>
+            </div>
+          </div>
+          <div className="account-container" onClick = {handleModal} > 
             <VscAccount/>
+            <div className={`${modalClass === true ? "display" : "hide"} account-options`}>
+            <div className="triangle-up" >
+              <VscTriangleUp/>
+            </div>
+            <div className = "items-parent"  >
+                <span className="options"> <Link to =  "/form" state = "signin"> Sign in</Link></span>
+                <span className="options"><Link to = "/form" state = "signup"> Sign up</Link></span>
+                </div>
+            </div>
           </div>
         </div>
       </div>
