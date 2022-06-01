@@ -3,7 +3,7 @@ import { Product } from "../../components";
 import "./ProductsPage.scss";
 const ProductsPage = () => {
   return (
-    <div className="products">
+    <div id = "products" className="products">
       <div className="products-header-image">
         <div className="page-title-container">
           <div className="products-heading-container">

@@ -34,6 +34,7 @@
       display: flex;
       flex-direction: row;
       div {
+        cursor: pointer;
         margin-right: 30px;
       }
     }
@@ -98,7 +99,20 @@
     font-size: 16px;
     border-radius: 5px;
   }
+.alternative-button{
+  width: 50%;
+  margin: auto;
 
+  p{
+    margin: 0;
+  }
+  span{
+    color:#ff6280;
+    cursor: pointer;
+
+   
+  }
+}
 
 .item-active {
   border-bottom: 3px solid #ff6280;
@@ -132,5 +146,11 @@
 
   .form-submit-button {
     width: 100%;
+  }
+
+  .alternative-button{
+    width: 100%;
+    margin: auto;
+  
   }
 }

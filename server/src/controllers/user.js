@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 
 //REGISTER USER
 export const registerUser = async (req, res) => {
-  const { email, fullName, password } = req.body;
+  const { email, name, password } = req.body;
 
   try {
     // check is user exists
@@ -12,11 +12,12 @@ export const registerUser = async (req, res) => {
 
     const hashedPassword = CryptoJS.AES.encrypt(password, process.env.PASS_SEC);
 
-    const result = await User.create({fullName,email,password: hashedPassword});
+    const result = await User.create({name,email,password: hashedPassword});
 
-    res.status(201).json(result.email, result.fullName);
+    res.status(201).json({result});
 
   } catch (err) { 
+    console.log(err);
     res.status(500).json({message: "Something went wrong"});
   }
 };

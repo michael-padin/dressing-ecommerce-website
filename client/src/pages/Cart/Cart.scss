@@ -1,0 +1,243 @@
+.cart-page-container {
+  min-height: 100vh;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.cart-links {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  margin: 20px 0;
+
+  button {
+    padding: 10px 20px;
+    border: 1px solid #ff6280;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: white;
+    color: #ff6280;
+    cursor: pointer;
+    width: 200px;
+    transform: scale(1, 1);
+    transition: transform 0.5s ease;
+
+    &:hover {
+      transform: scale(1.1, 1.1);
+    }
+    a {
+      text-decoration: none;
+      color: #ff6280;
+    }
+  }
+}
+
+.cart-sub-container {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #dadada;
+}
+
+.bottom-cart-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.cart-product-detail {
+  margin: 10px 0px;
+  display: flex;
+}
+
+.cart-product-details {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  p {
+    margin: 0;
+    text-align: left;
+    font-weight: 600;
+    span {
+      margin-left: 10px;
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
+}
+
+.cart-product-image-container {
+  display: flex;
+  width: 200px;
+  height: 300px;
+  background-color: #dddd;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.cart-right-section {
+  flex: 1 1 0%;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.product-quantity-container {
+  flex: 1;
+  flex: 1 1 0%;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+
+  .quantity {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 30px;
+  }
+
+  .quantity-desc {
+    display: flex;
+    border: 1px solid #dadada;
+    padding: 6px;
+    margin: 0;
+
+    span {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+    .minus {
+      color: #ff6280;
+    }
+    .num {
+      border-right: 1px solid #dadada;
+      border-left: 1px solid #dadada;
+    }
+    .plus {
+      color: rgb(49, 168, 49);
+    }
+  }
+  .cart-price {
+    font-size: 30px;
+    font-weight: 200;
+    margin: 10px;
+    color: #000;
+  }
+  .delete-icon-container {
+    height: 30px;
+    svg {
+      color: #676767;
+
+      height: 100%;
+      width: 100%;
+
+      &:hover {
+        transition: all 0.3s ease;
+        color: #ff6280;
+      }
+    }
+  }
+}
+
+.order-summary-container {
+  height: 100%;
+  text-align: left;
+  position: sticky;
+  border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 5%) 0px 0px 0px 1px,
+    rgb(209 213 219) 0px 0px 0px 1px inset;
+  padding: 20px;
+  margin-top: 50px;
+  bottom: 0px;
+  background-color: rgb(255, 255, 255);
+
+  h1 {
+    font-weight: 200;
+  }
+
+  .total-container {
+    margin: 30px 0px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 24px;
+  }
+  .buy-now-container {
+      display: flex;
+      justify-content: flex-end;
+    .buy-now {
+      width: 30%;
+      border-radius: 5px;
+      padding: 10px 20px;
+      background-color: #ff6280;
+      color: white;
+      border: none;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transform: scale(1, 1);
+      transition: transform 0.5s ease;
+
+      &:hover {
+        transform: scale(1.1, 1.1);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .cart-page-container {
+    padding: 10px;
+  }
+
+  .bottom-cart-container {
+    flex-direction: column;
+  }
+
+  .cart-product-detail {
+    margin: 0px;
+  }
+
+  .cart-product-image-container {
+    height: 150px;
+    width: auto;
+  }
+
+  .product-quantity-container {
+    flex-direction: row;
+    justify-content: space-around;
+
+    .quantity-desc {
+      svg {
+        height: 15px;
+        width: 15px;
+        padding: 5px;
+      }
+      span {
+        padding: 0;
+      }
+      .num {
+        padding: 0 10px;
+      }
+    }
+  }
+}

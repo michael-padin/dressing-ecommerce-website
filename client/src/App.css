@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   overflow-y: scroll; 
+  z-index:  1545;
 }
 
 .App-header {

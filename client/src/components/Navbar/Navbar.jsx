@@ -9,19 +9,20 @@ const Navbar = () => {
     <nav className="navbar-area">
       <div className="container">
         <div className="logo-wrapper">
-          <Link to="/home">
+          <Link to="/">
            <img src={logo} alt="" />
           </Link>
         </div>
         <ul className="navbar-links">
-          {["/home","/products",  "/about",  "/contact"].map((item) => (
+          <li> <Link to ="/">Home</Link></li>
+          {["/products",  "/about",  "/contact"].map((item) => (
             <li className="app__flex p-text" key={`link-${item}`}>
               <Link to={`${item}`}>{item.slice(1)}</Link>
             </li>
           ))}
         </ul>
         <div className="navbar-right">
-          <div className="cart-container"><AiOutlineShoppingCart/></div>
+          <div className="cart-container"><Link to = "/cart"><AiOutlineShoppingCart/></Link></div>
           <div className="account-container">
             <VscAccount/>
           </div>
