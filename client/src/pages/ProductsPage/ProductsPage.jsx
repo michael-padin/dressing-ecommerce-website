@@ -18,7 +18,6 @@ const ProductsPage = () => {
   }, [dispatch]);
 
   
-console.log(pathname);
   return (
     <div id="products" className="products">
       <div className="products-header-image">

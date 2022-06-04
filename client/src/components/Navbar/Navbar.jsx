@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.scss";
 import logo from "../../assets/logo.svg"
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { VscTriangleUp } from 'react-icons/vsc';
-import { VscAccount } from 'react-icons/vsc';
+import { VscAccount } from 'react-icons/vsc'; 
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAsyncCart } from "../../features/cartSlice.js";
 
 
 
 const Navbar = () => {
-  const {products} = useSelector((state) => state.cart)
+  const dispatch = useDispatch();
+  const {products, status} = useSelector((state) => state.cart)
+  const {_id} = useSelector((state) => state.user.currentUser)
   const [modalClass , setModalClass  ] = useState(false);
+  
 
   const handleModal =  () => {
     setModalClass(!modalClass);

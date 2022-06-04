@@ -11,13 +11,14 @@ import userReducer from "./userSlice";
 const rootPersistConfig ={ 
   key: 'root',
   storage: storage, 
-  blacklist: ['user']
+  blacklist: ['user', "cart"]
 }
+
 
 const userPersistConfig = { 
   key: 'user',
   storage: storage,
-  blacklist: ['error', 'status']
+  blacklist: ['error', 'status',]
 }
 
 const rootReducers = combineReducers({

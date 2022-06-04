@@ -45,13 +45,16 @@
 }
 
 .cart-product-detail {
+  min-width: 170px;
   margin: 10px 0px;
   display: flex;
 }
 
 .cart-product-details {
+  min-width: 300px;
   padding: 20px;
   display: flex;
+
   flex-direction: column;
   justify-content: space-around;
 
@@ -238,5 +241,9 @@
         padding: 0 10px;
       }
     }
+  }
+
+  .cart-product-details{
+    min-width: 200px;
   }
 }

@@ -1,11 +1,29 @@
+import { useState, CSSProperties } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Cart.scss";
 import collection1 from "../../assets/collection1.png";
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAsyncCartItem } from "../../features/cartSlice.js";
 const Cart = () => {
+  const dispatch = useDispatch();
   const {products, totalPrice} = useSelector((state) => state.cart);
+  const {currentUser} = useSelector((state) => state.user);
+
+  // @ts-ignore
+  const override: CSSProperties = {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
+  };
+
+  const handleDelete = (size, product_id) => {
+    // @ts-ignore
+    dispatch(deleteAsyncCartItem({size, productId:  product_id, userId: currentUser._id}));
+  }
+
 
   return (
     <div className="cart-page-container">
@@ -30,11 +48,11 @@ const Cart = () => {
                   Product: <span>{product.title}</span>
                 </p>
               </div>
-              <div className="cart-product-color">
+             {/*  <div className="cart-product-color">
                 <p>
                   Color: <span>fine knit jumper</span>
                 </p>
-              </div>
+              </div> */}
               <div className="cart-product-size">
                 <p>
                   Size: <span>{product.size}</span>
@@ -42,7 +60,7 @@ const Cart = () => {
               </div>
               <div className="cart-product-price">
                 <p>
-                  Price: <span>fine knit jumper</span>
+                  Price: <span>${product.price}</span>
                 </p>
               </div>
             </div>
@@ -51,17 +69,17 @@ const Cart = () => {
             <div className="product-quantity-container">
               <div className="quantity">
                 <p className="quantity-desc">
-                  <span className="minus" onClick={() => "fdf"}>
+                  <span className="minus">
                     <AiOutlineMinus />
                   </span>
                   <span className="num">{product.quantity}</span>
-                  <span className="plus" onClick={() => "fdf"}>
+                  <span className="plus" >
                     <AiOutlinePlus />
                   </span>
                 </p>
               </div>
-              <p className="cart-price">${product.price}</p>
-              <div className="delete-icon-container">
+              <p className="cart-price">${product.totalPrice}</p>
+              <div className="delete-icon-container" onClick = {() => handleDelete(product.size, product._id)}>
                 <AiOutlineDelete />
               </div>
             </div>

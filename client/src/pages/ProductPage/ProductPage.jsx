@@ -4,7 +4,7 @@ import "./ProductPage.scss";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {fetchAsyncSelectedProduct,refreshSelectedProduct,} from "../../features/productSlice.js";
-import { addAsyncProduct, addProduct, addQuantity } from "../../features/cartSlice.js";
+import { addAsyncCart, addAsyncCartQuantity, addProduct, addQuantity } from "../../features/cartSlice.js";
 
 const ProductPage = () => {
   const dispatch = useDispatch();
@@ -21,6 +21,7 @@ const ProductPage = () => {
   const [userProduct, setUserProduct] = useState('');
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(fetchAsyncSelectedProduct(productId));
     return () => {
       dispatch(refreshSelectedProduct());
@@ -31,17 +32,20 @@ const ProductPage = () => {
     setUserProduct(() => ({...selectedProduct, size, quantity}))
   }, [selectedProduct, size, quantity]);
 
+  
   const getProducts = () => {
     const totalPrice = products?.map((product) => product.totalPrice).reduce((a, b) => a + b, 0);
-    // const product = products?.find((product) =>product._id === userProduct._id &&product.size === userProduct.size);
+    // @ts-ignore
+    const product = products?.find((product) =>product._id === userProduct._id &&product.size === userProduct.size);
 
-    // if (product) {
-    //   const index = products.findIndex((product) =>product._id === userProduct._id &&product.size === userProduct.size);
-    //   dispatch(addQuantity({ quantity, index, totalPrice }));
-    // } else {
-    //   dispatch(addProduct({ ...userProduct, totalPrice }));
-      dispatch(addAsyncProduct({ product: userProduct, totalPrice, userId: currentUser._id }));
-    // }
+    if (product) {
+      // @ts-ignore
+      dispatch(addAsyncCartQuantity({ quantity, productSize: product.size, productId: userProduct._id, userId: currentUser._id }));
+
+    } else {
+      // @ts-ignore
+      dispatch(addAsyncCart({ products: {...userProduct, totalPrice}, userId: currentUser._id }));;
+    }
   };
 
   const handleQuantity = (type) => {

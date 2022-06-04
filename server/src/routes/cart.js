@@ -2,24 +2,25 @@ import express from 'express';
 const router = express.Router();
 
 // controllers
-import { addCart, updateCart, deleteCart, getAll } from '../controllers/cart.js';
+import { addCart, updateCart, deleteCart, getAll, getUserCart } from '../controllers/cart.js';
 
 // middleware
 // import { auth} from "../middleware/auth.js";
 
 // add cart
 router.post("/cart",addCart);
-// add cart
+
+// get cart
 router.get("/cart",  addCart);
 
 // get user Cart
-router.put("/find/:userId", deleteCart);
+router.get("/cart/find/:userId", getUserCart);
 
-// update cart
-router.put("/:id",  updateCart);
+// update item in cart
+router.post("/cart/updatecart/:userId",  updateCart);
 
-// delete cart
-router.put("/:id",  deleteCart);
+// delete item in cart
+router.post("/cart/deletecart/:userId",  deleteCart);
 
 
 
