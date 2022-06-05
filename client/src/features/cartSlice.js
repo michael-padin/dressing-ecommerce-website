@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { publicRequest } from "../api/shopApi.js";
 
 
-
 export const addAsyncCart = createAsyncThunk("/addAsyncCart", async(product, {rejectWithValue}) => {
       try {
         const {data} = await publicRequest.post("/cart", product);    
@@ -31,7 +30,6 @@ export const fetchAsyncCart = createAsyncThunk("/fetchAsyncCart", async(userId, 
     });
 
 export const addAsyncCartQuantity = createAsyncThunk("/addAsyncCartQuantity", async(product, {rejectWithValue}) => {
-  console.log(product);
       try {
         const {data} = await publicRequest.post(`/cart/updatecart/${product.userId}`, product);    
         return (data);
@@ -65,15 +63,8 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addQuantity: (state, { payload }) => {
-      state.products[payload.index].quantity += payload.quantity;  
-      state.products[payload.index].totalPrice =  state.products[payload.index].price *  state.products[payload.index].quantity
-      state.totalPrice = state.products?.map(product => product.totalPrice).reduce((a, b) => a + b, 0) 
-    },
-    addQuantityInCart: (state, { payload }) => {
-      state.products[payload.index].quantity = payload.quantity;  
-      state.products[payload.index].totalPrice =  state.products[payload.index].price *  state.products[payload.index].quantity
-      state.totalPrice = state.products?.map(product => product.totalPrice).reduce((a, b) => a + b, 0) 
+    refreshCartStatus : (state) => {
+      return{...state, status: ''}
     },
   },
   extraReducers: {
@@ -82,35 +73,37 @@ const cartSlice = createSlice({
     },
     [addAsyncCart.fulfilled]: (state, {payload}) => {
         const newPayload = Object.assign({}, ...payload)
-        console.log(newPayload);
-        // return {...state, status: "fulfilled", products: payload.products, totalPrice: payload.totalPrice}
+        return {...state, status: "fulfilled", products: newPayload.products, totalPrice: newPayload.totalPrice}
     },
     [addAsyncCart.rejected]: (state) => {
         return {...state, status: "rejected"}
     },
-    [fetchAsyncCart.pending]: (state) => {
+    [addAsyncCartQuantity.pending]: (state) => {
         return {...state, status: "pending"}
     },
-    [fetchAsyncCart.fulfilled]: (state, {payload}) => {
-      if (payload){
+    [addAsyncCartQuantity.fulfilled]: (state, {payload}) => {
         return {...state, status: "fulfilled", products: payload.products, totalPrice: payload.totalPrice}
-      }
+    },
+    [addAsyncCartQuantity.rejected]: (state) => {
+        return {...state, status: "rejected"}
+    },
+
+    [fetchAsyncCart.fulfilled]: (state, {payload}) => {
+        return {...state, products: payload.products, totalPrice: payload.totalPrice, status: ''} 
     },
     [fetchAsyncCart.rejected]: (state) => {
-        return {...state, status: "rejected"}
+        return {...state, status: "rejected",}
     },
     [deleteAsyncCartItem.pending]: (state) => {
         return {...state, status: "pending"}
     },
-    [deleteAsyncCartItem.fulfilled]: (state, {payload}) => {
-      if (payload){
-        return {...state, status: "fulfilled", }
-      }
+    [deleteAsyncCartItem.fulfilled]: (state) => {
+      return {...state, status: "fulfilled"}
     },
     [deleteAsyncCartItem.rejected]: (state) => {
         return {...state, status: "rejected"}
     },
   }
 });
-export const { addQuantity, removeProduct,addQuantityInCart } = cartSlice.actions;
+export const { addQuantity, addQuantityInCart, refreshCartStatus } = cartSlice.actions;
 export default cartSlice.reducer;

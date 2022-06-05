@@ -22,7 +22,7 @@ const Footer = () => {
                       <Link to ="/products"><MdKeyboardArrowRight/>Products</Link>
                     </li>
                     <li>
-                      <Link to ="/cart"><MdKeyboardArrowRight />Products</Link>
+                      <Link to ="/cart"><MdKeyboardArrowRight />Cart</Link>
                     </li>
                   </ul>
                 </h4>

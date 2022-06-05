@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { login, register } from "../../features/userSlice.js";
 import "./Form.scss";
 
 const Form = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const {state } = location
-    const dispatch = useDispatch();
+  const {status, message} = useSelector((state) => state.user);
   const [formSignUpData, setFormSignUpData] = useState({ name: "", email:"", password: ""});
   const [formSignInData, setFormSignInData] = useState({email: "", password: ""})
   const [activeFilter, setActiveFilter] = useState("signin");
+  const [disabled, setDisabled] = useState(false)
+  const [errMessage, setErrMessage] = useState("");
 
   useEffect(() => {
     if(state === 'signup'){
@@ -20,19 +23,43 @@ const Form = () => {
     }
   },[state])
 
-  const handleActive = (item) => {setActiveFilter(item)};
+
+  useEffect(() => {
+    if(status === 'pending'){
+      setDisabled(true)
+    } else {
+      setDisabled(false)
+    }
+
+    if (status === 'fulfilled'){
+      setFormSignInData({email: "", password: ""});
+      setActiveFilter('signin');
+    }
+
+    if (status === 'rejected'){
+      setErrMessage(message);
+    }
+
+
+  },[status, message])
+
+  const handleActive = (item) => {
+    setActiveFilter(item)
+    setErrMessage("");
+  };
 
   const handleSignInInput = (e) => {
     setFormSignInData({...formSignInData, [e.target.name]: e.target.value});
   }
 
   const handleSignInSubmit = (e) => {
+    setErrMessage("");
     e.preventDefault();
     dispatch(login({...formSignInData}));
-    setFormSignInData({email: "", password: ""});
   }
 
   const handleSignUpInput = (e) => {
+    setErrMessage("");
     setFormSignUpData({...formSignUpData, [e.target.name]: e.target.value});
     
   }
@@ -40,10 +67,7 @@ const Form = () => {
   const handleSignUpSubmit = (e) => {
     e.preventDefault();
     dispatch(register({...formSignUpData}));
-    setFormSignUpData({name: "",email: "", password: ""});
   }
-
-
 
   return (
     <div className="form-container">
@@ -82,9 +106,10 @@ const Form = () => {
                   id="login_password" 
                   placeholder="Enter your password"
                   value = {formSignInData.password}/>
+                <span className="error-message">{errMessage}</span>
                 </div>
               </div>
-              <button className="form-submit-button">Sign in</button>
+              <button className="form-submit-button"  type = 'submit' disabled={disabled}>Sign in</button>  
               <div className="alternative-button">
                 <p>Don't have an account? <span onClick={() => handleActive("signup")}>Sign up</span></p>
               </div>
@@ -93,8 +118,8 @@ const Form = () => {
         ) : (
           <form onSubmit = {handleSignUpSubmit}>
             <div className="form-signup-container">
-              <h1>Welcome back</h1>
-              <p>Welcome back! Please enter your details</p>
+              <h1>Sign Up</h1>
+              <p>Sign up! Please enter your details</p>
               <div className="input-container">
                 <div className="email-container">
                   <label htmlFor="signup-fullname">Full Name <span>*</span></label>
@@ -121,13 +146,13 @@ const Form = () => {
                   onChange = {handleSignUpInput}
                   value = {formSignUpData.password} 
                   name="password" 
-                  type="password" 
+                  type="password"   
                   id="login_password" 
                   placeholder="Enter your password" required/>
+                <span className="error-message">{errMessage}</span>
                 </div>
               </div>
-                <button className="form-submit-button">Sign up</button>
-
+                <button className="form-submit-button" type = 'submit' disabled = {disabled} >Sign up</button>
               <div className="alternative-button">
                 <p>Already have an account? <span onClick={() => handleActive("signin")}>Sign in</span></p>
               </div>

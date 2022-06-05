@@ -53,21 +53,6 @@ export const getProduct = async (req, res) => {
 };
 
 
-// GET  PRODUCTS BY SEARCHQUERY           
-export const getProductsBySearch = async (req, res) => {
-  const searchQuery = req.query.searchQuery;
-  const title = new RegExp(searchQuery, "i");
-
-  try {                 
-    const products = await Product.find({$or: [{title: title},{ categories: { $in: [title]}}]})
-
-    res.status(200).json({data: products});
-
-  } catch (error) {
-    res.status(500).json(error);
-  }
-}
-
 
 //GET PRODUCTS AND QUERY
 export const getProducts = async (req, res) => {

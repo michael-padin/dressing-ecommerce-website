@@ -50,47 +50,5 @@ export const loginUser = async (req, res) => {
 };
 
 
-// UPDATE USER
-export const updateUser = async (req, res) => {
-  const {email} = req.body;
-  const existingUser = await User.findOne({ email });
 
-  const hashedPassword = CryptoJS.AES.decrypt(existingUser.password,process.env.PASS_SEC);
-
-  const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-  if (originalPassword !== req.body.currentPassword) return res.status(400).json({message:"Invalid credentials"});
-
-  // if password is change then encrypt again
-  if (req.body.password) {
-    req.body.password = CryptoJS.AES.encrypt(
-      req.body.password,
-      process.env.PASS_SEC
-    ).toString();
-  }
-
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body},
-      { new: true }
-    );
-
-    res.status(200).json({message: "Password updated!"});
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
-
-// GET SPECIFIC USER
-export const getUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-
-    const { password, ...others } = user._doc;
-
-    res.status(200).json(others);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
 

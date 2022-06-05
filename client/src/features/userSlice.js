@@ -40,7 +40,7 @@ const userSlice = createSlice({
     logoutStart: (state)  => {
       return{...state, currentUser :null, status : "", }
     },
-    removeStatus: (state) => {
+    refreshUserStatus: (state) => {
      return {...state, status : "", message : ""} 
     }
 }, extraReducers: {
@@ -64,5 +64,5 @@ const userSlice = createSlice({
   },
 }
 });
-export const { logoutStart, removeStatus } = userSlice.actions;
+export const { logoutStart, refreshUserStatus } = userSlice.actions;
 export default userSlice.reducer;

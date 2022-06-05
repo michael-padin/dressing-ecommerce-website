@@ -20,7 +20,7 @@ export const addCart = async (req, res) => {
     
     await Cart.updateOne({userId: userId },{ $set: {'totalPrice': finalPrice[0].totalPrices}},);
     
-    console.log(result);
+    res.status(200).json(result)
 
   } else {  
     
@@ -30,10 +30,13 @@ export const addCart = async (req, res) => {
   
     const finalPrice = await Cart.aggregate([{$unwind: "$products"}, {$group: {_id: null, totalPrices: {$sum: "$products.totalPrice"}}}]);
     
-   await Cart.updateOne({userId: userId },{ $set: {'totalPrice': finalPrice[0].totalPrices}},);
+    await Cart.updateOne({userId: userId },{ $set: {'totalPrice': finalPrice[0].totalPrices}},);
+  
+    const newResult = await Cart.find({ userId: userId })
 
+    res.status(200).json(newResult);
+    
 
-  console.log(result);
 
   }
 
@@ -67,12 +70,31 @@ export const getAll = async (req, res) => {
 
 // UPDATE CART
 export const updateCart = async (req, res) => {
-  const {quantity, index, userId, productId, productSize} = req.body;
-  
-  try {
+  const {quantity, productId, productSize, userId} = req.body;
 
+  try {
+    const newCartProduct =  await Cart.aggregate([
+      {$unwind: '$products'},
+      {$match: {'products._id' : productId, 'products.size': productSize}},
+      {$project: {
+        _id: null, 
+        newQuantity: {$sum: ["$products.quantity", quantity]}, 
+        productTotalPrice: {$multiply: ["$products.price", {$sum: ["$products.quantity", quantity]}]},      }},
+    ]);
+    
+    await Cart.updateOne({userId: userId, "products.size": productSize}, {$set: {"products.$.quantity": newCartProduct[0].newQuantity, "products.$.totalPrice": newCartProduct[0].productTotalPrice}})
       
-// /*  */    res.status(200).json(foundCart);
+    const productsTotalPrice = await Cart.aggregate([
+      {$unwind: '$products'},
+      {$project: {_id: null, totalPrice: {$sum: "$products.totalPrice"}}}
+    ])
+
+    await Cart.updateOne({userId: userId}, {$set: {totalPrice: productsTotalPrice[0].totalPrice}});
+    
+    const result = await Cart.find({userId: userId});
+
+    res.status(200).json(result);
+
   } catch (error) {
     res.status(500).json(error);
   }
@@ -80,14 +102,27 @@ export const updateCart = async (req, res) => {
 
 //DELETE CART
 export const deleteCart = async (req, res) => {
-  const {productId, userId, size} = req.body;
-
+  const {productId, userId, size, productPrice} = req.body;
   try {
- // @ts-ignore
- await Cart.updateOne({ userId: userId }, {$pull: { "products": { "_id": productId, "size": size } } });
-    res.status(200).json("Cart has been deleted...");
-  } catch (error) {
+    const result = await Cart.find({userId: userId});
 
-    res.status(500).json({message: error.message});
+    if(Object.keys(result[0].products).length === 0){
+      
+    await Cart.deleteOne({ userId: userId});
+
+    res.status(200).json({message: 'Cart deleted successfully'});
+
+    }else {
+      await Cart.updateOne({ userId: userId }, {$pull: { "products": { "_id": productId, "size": size } } });
+      // @ts-ignore
+      const updatedTotalPrice = await Cart.aggregate([{ $project: { _id: 0,  totalPrice: { $subtract: [ "$totalPrice", productPrice ] } } }])
+  
+      await Cart.updateOne({ userId: userId }, {$set: { totalPrice:  updatedTotalPrice[0].totalPrice} });
+      
+      const result = await Cart.find({userId: userId});
+      res.status(200).json(result);
+    };
+  } catch (error) {
+    res.status(500).json({message: "Something went wrong"});
   }
 };

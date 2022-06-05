@@ -2,10 +2,8 @@ import express from 'express';
 const router = express.Router();
 
 // controllers
-import { addCart, updateCart, deleteCart, getAll, getUserCart } from '../controllers/cart.js';
+import { addCart, updateCart, deleteCart, getUserCart } from '../controllers/cart.js';
 
-// middleware
-// import { auth} from "../middleware/auth.js";
 
 // add cart
 router.post("/cart",addCart);

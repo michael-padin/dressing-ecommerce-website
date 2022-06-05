@@ -147,7 +147,7 @@
     height: 30px;
     svg {
       color: #676767;
-
+      cursor: pointer;
       height: 100%;
       width: 100%;
 
@@ -205,6 +205,27 @@
     }
   }
 }
+
+.no-data-container{
+  flex-direction: column;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-data-image-container{
+  margin-bottom:  20px;
+  width: 200px;
+  height: 200px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+
 
 @media screen and (max-width: 800px) {
   .cart-page-container {
