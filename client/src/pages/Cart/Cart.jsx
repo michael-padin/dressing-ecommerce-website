@@ -1,21 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import "./Cart.scss";
 import nodata from "../../assets/no-data.svg";
 import {  AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import {deleteAsyncCartItem,} from "../../features/cartSlice.js";
+import "./Cart.scss";
+
 const Cart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { products, totalPrice } = useSelector((state) => state.cart);
   const { currentUser } = useSelector((state) => state.user);
+  const [warningMessage, setWarningMessage] = useState("");
+
 
   const handleDelete = (size, productId, productTotalPrice) => {
     dispatch(
       // @ts-ignore
       deleteAsyncCartItem({size,productId: productId,userId: currentUser._id,productPrice: productTotalPrice,})
     );
-  
+  };
+
+  const handleBuy = () => {
+    navigate("/checkout", {state: {
+      products: products
+    }})
   };
 
   return (
@@ -58,10 +68,7 @@ const Cart = () => {
                 <p className="cart-price">${product.totalPrice}</p>
                 <div
                   className="delete-icon-container"
-                  onClick={() =>
-                    handleDelete(product.size, product._id, product.totalPrice)
-                  }
-                >
+                  onClick={() =>handleDelete(product.size, product._id, product.totalPrice)}>
                   <AiOutlineDelete />
                 </div>
               </div>
@@ -84,12 +91,17 @@ const Cart = () => {
             <span className="total-price">${totalPrice}</span>
           </div>
           <div className="buy-now-container">
-            <button type="button" className="buy-now">
-              Buy Now
+            <button type="button" className="buy-now"  onClick = {handleBuy}>
+              Check out
             </button>
           </div>
         </div>
       )}
+       <div className="warning-message-wrapper">
+          <div className="warning-message-container">
+            <p>{warningMessage}</p>
+          </div>
+        </div>
     </div>
   );
 };

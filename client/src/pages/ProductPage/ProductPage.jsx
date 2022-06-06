@@ -27,6 +27,7 @@ const ProductPage = () => {
   const [active, setActive] = useState("");
   const [size, setSize] = useState("");
   const [userProduct, setUserProduct] = useState("");
+  const [warningMessage, setWarningMessage] = useState("");
 
   // fetch single product
   useEffect(() => {
@@ -67,7 +68,11 @@ const ProductPage = () => {
       // @ts-ignore
       dispatch(addAsyncCart({products: { ...userProduct, totalPrice },userId: currentUser._id,}));
     }
+  };
 
+  const handleBuyNow = () => {
+    Object.keys(products).length === 0 &&
+    setWarningMessage("You Don't have any products in your cart");
     
   };
 
@@ -170,7 +175,7 @@ const ProductPage = () => {
                 >
                   Add to Cart
                 </button>
-                <button type="button" className="buy-now">
+                <button type="button" className="buy-now" onClick = {handleBuyNow}>
                   Buy Now
                 </button>
               </>
