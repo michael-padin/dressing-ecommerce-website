@@ -72,8 +72,7 @@ const cartSlice = createSlice({
         return {...state, status: "pending"}
     },
     [addAsyncCart.fulfilled]: (state, {payload}) => {
-        const newPayload = Object.assign({}, ...payload)
-        return {...state, status: "fulfilled", products: newPayload.products, totalPrice: newPayload.totalPrice}
+        return {...state, status: "fulfilled", products: payload.products, totalPrice: payload.totalPrice}
     },
     [addAsyncCart.rejected]: (state) => {
         return {...state, status: "rejected"}
@@ -89,7 +88,9 @@ const cartSlice = createSlice({
     },
 
     [fetchAsyncCart.fulfilled]: (state, {payload}) => {
-        return {...state, products: payload.products, totalPrice: payload.totalPrice, status: ''} 
+        if(payload){
+          return {...state, products: payload.products, totalPrice: payload.totalPrice, status: 'fulfilled'} 
+        }
     },
     [fetchAsyncCart.rejected]: (state) => {
         return {...state, status: "rejected",}
@@ -97,8 +98,8 @@ const cartSlice = createSlice({
     [deleteAsyncCartItem.pending]: (state) => {
         return {...state, status: "pending"}
     },
-    [deleteAsyncCartItem.fulfilled]: (state) => {
-      return {...state, status: "fulfilled"}
+    [deleteAsyncCartItem.fulfilled]: (state, {payload}) => {
+      return {...state, status: "fulfilled", products: payload.products, totalPrice: payload.totalPrice}
     },
     [deleteAsyncCartItem.rejected]: (state) => {
         return {...state, status: "rejected"}

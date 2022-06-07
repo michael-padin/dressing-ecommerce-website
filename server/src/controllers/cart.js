@@ -2,37 +2,33 @@ import Cart from "../models/Cart.js";
 
 // CREATE CART
 export const addCart = async (req, res) => {
-  const {products, quantity, userId} = req.body;
+  const {products, quantity, userId, totalPrice} = req.body;
 
   try {
     
+    let result = await Cart.findOne({ userId: userId });
     
-    const singleProductTotalPrice = products.price * products.quantity;
-    let result = await Cart.find({ userId: userId });
-    
-    if (result.length > 0) {
+    if (result) {
       
     await Cart.updateOne({ userId: userId },{ $push: { products: { $each: [products], $position: 0 } } },);
-
-    await Cart.updateOne({ userId: userId },{ $set: {'products.0.totalPrice': singleProductTotalPrice}});
     
-    const finalPrice = await Cart.aggregate([{$unwind: "$products"}, {$group: {_id: null, totalPrices: {$sum: "$products.totalPrice"}}}]);
+    const finalPrice = await Cart.aggregate([ {$match: {'userId': userId }},{$unwind: "$products"}, {$group: {_id: null, totalPrices: {$sum: "$products.totalPrice"}}}]);
     
     await Cart.updateOne({userId: userId },{ $set: {'totalPrice': finalPrice[0].totalPrices}},);
+
+    const newResult = await Cart.findOne({ userId: userId});
     
-    res.status(200).json(result)
+    res.status(200).json(newResult);
 
   } else {  
     
-    await Cart.create({products, quantity, userId});
+    await Cart.create({products, quantity, userId, totalPrice});
  
-    await Cart.updateOne({ userId: userId },{ $set: {'products.0.totalPrice': singleProductTotalPrice}});
-  
-    const finalPrice = await Cart.aggregate([{$unwind: "$products"}, {$group: {_id: null, totalPrices: {$sum: "$products.totalPrice"}}}]);
+    const finalPrice = await Cart.aggregate([ {$match: {'userId': userId }},{$unwind: "$products"}, {$group: {_id: null, totalPrices: {$sum: "$products.totalPrice"}}}]);
     
     await Cart.updateOne({userId: userId },{ $set: {'totalPrice': finalPrice[0].totalPrices}},);
   
-    const newResult = await Cart.find({ userId: userId })
+    const newResult = await Cart.findOne({ userId: userId })
 
     res.status(200).json(newResult);
     
@@ -85,13 +81,14 @@ export const updateCart = async (req, res) => {
     await Cart.updateOne({userId: userId, "products.size": productSize}, {$set: {"products.$.quantity": newCartProduct[0].newQuantity, "products.$.totalPrice": newCartProduct[0].productTotalPrice}})
       
     const productsTotalPrice = await Cart.aggregate([
+      {$match: {'userId': userId }},
       {$unwind: '$products'},
       {$project: {_id: null, totalPrice: {$sum: "$products.totalPrice"}}}
     ])
 
     await Cart.updateOne({userId: userId}, {$set: {totalPrice: productsTotalPrice[0].totalPrice}});
     
-    const result = await Cart.find({userId: userId});
+    const result = await Cart.findOne({userId: userId});
 
     res.status(200).json(result);
 
@@ -104,22 +101,22 @@ export const updateCart = async (req, res) => {
 export const deleteCart = async (req, res) => {
   const {productId, userId, size, productPrice} = req.body;
   try {
-    const result = await Cart.find({userId: userId});
+    const result = await Cart.findOne({userId: userId});
 
-    if(Object.keys(result[0].products).length === 0){
+    if(Object.keys(result.products).length === 1){
       
     await Cart.deleteOne({ userId: userId});
 
-    res.status(200).json({message: 'Cart deleted successfully'});
+    res.status(200).json({products: [], totalPrice: 0});
 
     }else {
       await Cart.updateOne({ userId: userId }, {$pull: { "products": { "_id": productId, "size": size } } });
       // @ts-ignore
-      const updatedTotalPrice = await Cart.aggregate([{ $project: { _id: 0,  totalPrice: { $subtract: [ "$totalPrice", productPrice ] } } }])
+      const updatedTotalPrice = await Cart.aggregate([{$match: {'userId': userId }},{ $project: { _id: 0,  totalPrice: { $subtract: [ "$totalPrice", productPrice ] } } }])
   
       await Cart.updateOne({ userId: userId }, {$set: { totalPrice:  updatedTotalPrice[0].totalPrice} });
       
-      const result = await Cart.find({userId: userId});
+      const result = await Cart.findOne({userId: userId});
       res.status(200).json(result);
     };
   } catch (error) {

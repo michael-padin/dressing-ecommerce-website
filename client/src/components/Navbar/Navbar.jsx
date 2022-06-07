@@ -18,11 +18,9 @@ const Navbar = () => {
 
 
   useEffect(() => {
-      if ( currentUser !== null  || status ) {
-        dispatch(fetchAsyncCart(currentUser._id));
-    }
+    if(currentUser)dispatch(fetchAsyncCart(currentUser._id));
 
-  }, [dispatch, currentUser, status]);
+  }, []);
 
   const handleModal = () => {
     setModalClass(!modalClass);
@@ -46,9 +44,12 @@ const Navbar = () => {
             <Link to="/cart">
               <AiOutlineShoppingCart />
             </Link>
+            {
+              Object.keys(products).length !== 0 &&
             <div className="cart-size">
               <span>{products.length}</span>
             </div>
+            }
           </div>
           <div className="account-container" onClick={handleModal}>
             {currentUser ? (

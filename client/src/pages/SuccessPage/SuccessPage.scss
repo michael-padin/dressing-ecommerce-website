@@ -1,0 +1,56 @@
+.success-wrapper {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../../assets/success-page-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: block; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.37
+  ); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
+
+.success-container {
+  background-color: rgba(255, 97, 126, 0.75);
+  color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+  z-index: 999;
+}
+
+.success-text-container {
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 800px) {
+
+
+    .success-container {
+        margin: auto 20px;
+      }
+
+    .success-text-container {
+        font-size: 1rem;
+      }
+}

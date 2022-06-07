@@ -1,19 +1,25 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import nodata from "../../assets/no-data.svg";
 import {  AiOutlineDelete } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
-import {deleteAsyncCartItem,} from "../../features/cartSlice.js";
-import "./Cart.scss";
 
-const Cart = () => {
+import {deleteAsyncCartItem, fetchAsyncCart,} from "../../features/cartSlice.js";
+import "./CartPage.scss";
+import { useEffect } from "react";
+
+const CartPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { products, totalPrice } = useSelector((state) => state.cart);
   const { currentUser } = useSelector((state) => state.user);
-  const [warningMessage, setWarningMessage] = useState("");
 
+
+  useEffect(() => {
+    dispatch(fetchAsyncCart(currentUser._id));
+  }, [])
+  
 
   const handleDelete = (size, productId, productTotalPrice) => {
     dispatch(
@@ -23,9 +29,10 @@ const Cart = () => {
   };
 
   const handleBuy = () => {
-    navigate("/checkout", {state: {
-      products: products
-    }})
+      navigate("/checkout", {state:{
+        products: products,
+        totalPrice
+      }})
   };
 
   return (
@@ -40,7 +47,7 @@ const Cart = () => {
           <div className="bottom-cart-container" key={index}>
             <div className="cart-product-detail">
               <div className="cart-product-image-container">
-                <Link to="/">
+                <Link to={`/product/${product._id}`}>
                   <img src={product.img} alt="" />
                 </Link>
               </div>
@@ -53,6 +60,11 @@ const Cart = () => {
                 <div className="cart-product-size">
                   <p>
                     Size: <span>{product.size}</span>
+                  </p>
+                </div>
+                <div className="cart-product-size">
+                  <p>
+                    Quantity: <span>{product.quantity}</span>
                   </p>
                 </div>
                 <div className="cart-product-price">
@@ -97,13 +109,8 @@ const Cart = () => {
           </div>
         </div>
       )}
-       <div className="warning-message-wrapper">
-          <div className="warning-message-container">
-            <p>{warningMessage}</p>
-          </div>
-        </div>
     </div>
   );
 };
 
-export default Cart;
+export default CartPage;

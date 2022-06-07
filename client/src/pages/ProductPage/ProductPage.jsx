@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState, CSSProperties } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  AiFillStar,
-  AiOutlineStar,
-  AiOutlineMinus,
-  AiOutlinePlus,
-} from "react-icons/ai";
+import {AiFillStar,AiOutlineStar,AiOutlineMinus,AiOutlinePlus,AiOutlineCloseCircle} from "react-icons/ai";
+import {MdOutlineClose} from "react-icons/md";
+
+import ClipLoader from "react-spinners/ClipLoader";
+import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
+import BeatLoader from "react-spinners/BeatLoader";
+
 import {
   fetchAsyncSelectedProduct,
   refreshSelectedProduct,
@@ -14,20 +15,32 @@ import {
 import { addAsyncCart, addAsyncCartQuantity } from "../../features/cartSlice.js";
 import "./ProductPage.scss";
 
+
+const override: CSSProperties = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "#ff6280",
+};
+
+
 const ProductPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const productId = location.pathname.split("/")[2];
 
   const { currentUser } = useSelector((state) => state.user);
   const { selectedProduct } = useSelector((state) => state.products);
-  const { products } = useSelector((state) => state.cart);
+  const { products, status } = useSelector((state) => state.cart);
 
   const [quantity, setQuantity] = useState(1);
   const [active, setActive] = useState("");
   const [size, setSize] = useState("");
   const [userProduct, setUserProduct] = useState("");
-  const [warningMessage, setWarningMessage] = useState("");
+  const [warningMessage, setWarningMessage] = useState();
+  const [showMessage, setShowMessage] = useState('');
+
+  
 
   // fetch single product
   useEffect(() => {
@@ -41,6 +54,17 @@ const ProductPage = () => {
   useEffect(() => {
     setUserProduct(() => ({ ...selectedProduct, size, quantity }));
   }, [selectedProduct, size, quantity]);
+
+  // set user selected Item
+  useEffect(() => {
+    if (status === 'pending') {
+      setShowMessage("show-message");
+      document.body.style.overflow = 'hidden';
+    } else if (status === 'fulfilled') {
+      setShowMessage(null);
+      document.body.style.overflow = 'auto';
+    }
+  }, [status]);
 
   // handle quantity
   const handleQuantity = (type) => {
@@ -56,12 +80,17 @@ const ProductPage = () => {
   };
 
   const handleCart = () => {
-    const totalPrice = 0;
+
+    const totalPrice = userProduct.price * quantity;
 
     // @ts-ignore
     const product = products?.find((product) =>product._id === userProduct._id && product.size === userProduct.size);
 
-    if (product) {
+    if (size === ''){
+      setShowMessage("show-message")
+      setWarningMessage("Please select a size")
+      document.body.style.overflow = 'hidden';
+    }else if (product) {
       // @ts-ignore
       dispatch(addAsyncCartQuantity({ userId: currentUser._id, productId: product._id, productSize: product.size, quantity}));
     } else {
@@ -71,10 +100,17 @@ const ProductPage = () => {
   };
 
   const handleBuyNow = () => {
-    Object.keys(products).length === 0 &&
-    setWarningMessage("You Don't have any products in your cart");
-    
+    navigate("/checkout", {state:{
+      products: [{...userProduct, totalPrice: quantity * userProduct.price}],
+      totalPrice: quantity * userProduct.price
+    }})
   };
+
+  const handleCloseModal = () => {
+    document.body.style.overflow = 'auto';
+    setWarningMessage(null);
+    setShowMessage(null)
+  }
 
   return (
     <>
@@ -194,6 +230,20 @@ const ProductPage = () => {
               </>
             )}
           </div>
+        </div>
+        <div className = {`${showMessage} warning-message-wrapper`}>
+          {
+          status === 'pending' &&
+          <BeatLoader color= "#ff6280" loading={status === 'pending' ? true : false} css={override} size={20} />
+            }
+
+          {
+            warningMessage &&
+            <div className="warning-message-container">
+            <div className="close-modal-container" onClick = {handleCloseModal}><MdOutlineClose/></div>
+            <p className="warning-message">{warningMessage}</p>
+          </div>
+          }
         </div>
       </div>
     </>

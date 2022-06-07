@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { login, register } from "../../features/userSlice.js";
-import "./Form.scss";
+import "./FormPage.scss";
 
-const Form = () => {
+const FormPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const {state } = location
@@ -165,4 +165,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FormPage;

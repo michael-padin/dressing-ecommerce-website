@@ -1,12 +1,22 @@
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate} from "react-router-dom";
-
+import nodata from "../../assets/no-data.svg";
 const CheckoutPage = () => {
   const navigate = useNavigate();
-  const {products, totalPrice} = useSelector((state) => state.cart)
   const location =useLocation();
   const pathname = location.pathname.split("/")[1];
+  const [products, setProducts] = useState()
+  const [totalPrice, settotalPrice] = useState();
 
+  useEffect(() => {
+    if (location.state){
+      setProducts(() => location.state.products);
+      settotalPrice(() => location.state.totalPrice);
+    }
+  }, [location])
+  
+  console.log(location);
   const handleCheckout = () => {
     navigate("/success")
   }
@@ -32,8 +42,17 @@ const CheckoutPage = () => {
         </div>
       </div>
     <div className="cart-page-container">
+      {
+    location.state === null ? 
+        <div className="no-data-container">
+          <div className="no-data-image-container">
+            <img src={nodata} alt="no data" />
+          </div>
+          <span className="no-data-text"> No items to check out</span>
+        </div> :
+        <>
     <div className="cart-sub-container">
-      {products.map((product, index) => (
+      {products?.map((product, index) => (
         <div className="bottom-cart-container" key={index}>
           <div className="cart-product-detail">
             <div className="cart-product-image-container">
@@ -80,6 +99,8 @@ const CheckoutPage = () => {
           </button>
         </div>
       </div>
+      </>
+}
   </div>
   </>
   )

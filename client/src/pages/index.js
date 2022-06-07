@@ -1,0 +1,6 @@
+export {default as CartPage} from "./CartPage/CartPage.jsx"
+export {default as ProductsPage} from "./ProductsPage/ProductsPage.jsx"
+export {default as ProductPage} from "./ProductPage/ProductPage.jsx"
+export {default as SuccessPage} from "./SuccessPage/SuccessPage.jsx"
+export {default as CheckoutPage} from "./CheckoutPage/CheckoutPage.jsx"
+export {default as FormPage} from "./FormPage/FormPage.jsx"
