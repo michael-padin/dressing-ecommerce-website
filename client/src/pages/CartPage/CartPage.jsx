@@ -8,7 +8,7 @@ import {  AiOutlineDelete } from "react-icons/ai";
 
 import {deleteAsyncCartItem, fetchAsyncCart,} from "../../features/cartSlice.js";
 import "./CartPage.scss";
-import { useEffect, useState, CSSProperties } from "react";
+import { useEffect, useState } from "react";
 
 import BeatLoader from "react-spinners/BeatLoader";
 
@@ -22,7 +22,7 @@ const CartPage = () => {
 
   useEffect(() => {
     currentUser && dispatch(fetchAsyncCart(currentUser._id));
-  }, [])
+  }, [currentUser, dispatch])
   
    useEffect(() => {
     if (status === 'pending') {
@@ -40,6 +40,8 @@ const CartPage = () => {
   };
 
   const handleBuy = () => {
+
+
       navigate("/checkout", {state:{
         products: products,
         totalPrice

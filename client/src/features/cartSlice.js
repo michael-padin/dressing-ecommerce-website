@@ -55,6 +55,20 @@ export const deleteAsyncCartItem = createAsyncThunk("/deleteAsyncCartItem", asyn
       }
     });
 
+export const deleteAsyncAllCartItems = createAsyncThunk("/deleteAsyncAllCartItems", async(product, {rejectWithValue}) => {
+  console.log(product);
+      try {
+        const {data} = await publicRequest.post(`/cart/deletecarts/${product.userId}`, product);    
+        return (data);
+      }catch (err) {
+        let errorMessage = "Internal Server Error";
+        if (err.response) {
+          errorMessage = err.response.data.message;
+        }
+        return rejectWithValue(errorMessage); 
+      }
+    });
+
 
 
 const initialState = { products: [], totalPrice: 0, status: '' };
@@ -102,6 +116,15 @@ const cartSlice = createSlice({
       return {...state, status: "fulfilled", products: payload.products, totalPrice: payload.totalPrice}
     },
     [deleteAsyncCartItem.rejected]: (state) => {
+        return {...state, status: "rejected"}
+    },
+    [deleteAsyncAllCartItems.pending]: (state) => {
+        return {...state, status: "pending"}
+    },
+    [deleteAsyncAllCartItems.fulfilled]: (state, {payload}) => {
+      return {...state, status: "fulfilled", products: payload.products, totalPrice: payload.totalPrice}
+    },
+    [deleteAsyncAllCartItems.rejected]: (state) => {
         return {...state, status: "rejected"}
     },
   }

@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 // controllers
-import { addCart, updateCart, deleteCart, getUserCart } from '../controllers/cart.js';
+import { addCart, updateCart, deleteSingleCart, getUserCart, deleteCart } from '../controllers/cart.js';
 
 
 // add cart
@@ -18,7 +18,10 @@ router.get("/cart/find/:userId", getUserCart);
 router.post("/cart/updatecart/:userId",  updateCart);
 
 // delete item in cart
-router.post("/cart/deletecart/:userId",  deleteCart);
+router.post("/cart/deletecart/:userId",  deleteSingleCart);
+
+// remote all items in cart;
+router.post("/cart/deletecarts/:userId",  deleteCart);
 
 
 

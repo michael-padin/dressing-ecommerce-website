@@ -12,15 +12,15 @@ import { logoutStart } from "../../features/userSlice.js";
 const Navbar = () => {
   const dispatch = useDispatch();
   
-  const { products, status } = useSelector((state) => state.cart);
+  const { products } = useSelector((state) => state.cart);
   const {currentUser}  = useSelector((state) => state.user);
   const [modalClass, setModalClass] = useState(false);
 
 
   useEffect(() => {
-    if(currentUser)dispatch(fetchAsyncCart(currentUser._id));
+    if(currentUser) dispatch(fetchAsyncCart(currentUser._id));
 
-  }, []);
+  }, [currentUser,dispatch]);
 
   const handleModal = () => {
     setModalClass(!modalClass);

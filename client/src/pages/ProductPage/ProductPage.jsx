@@ -1,7 +1,7 @@
 import React, { useEffect, useState, CSSProperties } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {AiFillStar,AiOutlineStar,AiOutlineMinus,AiOutlinePlus,AiOutlineCloseCircle} from "react-icons/ai";
+import {AiFillStar,AiOutlineStar,AiOutlineMinus,AiOutlinePlus} from "react-icons/ai";
 import {MdOutlineClose} from "react-icons/md";
 
 import BeatLoader from "react-spinners/BeatLoader";

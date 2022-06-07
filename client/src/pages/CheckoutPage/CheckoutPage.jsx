@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate} from "react-router-dom";
 import nodata from "../../assets/no-data.svg";
+import { deleteAsyncAllCartItems } from "../../features/cartSlice.js";
+
+
 const CheckoutPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location =useLocation();
   const pathname = location.pathname.split("/")[1];
+  const {currentUser} = useSelector((state) => state.user);
+
+  //states
   const [products, setProducts] = useState()
   const [totalPrice, settotalPrice] = useState();
 
@@ -16,9 +23,11 @@ const CheckoutPage = () => {
     }
   }, [location])
   
-  console.log(location);
   const handleCheckout = () => {
-    navigate("/success")
+    if (currentUser) {
+      dispatch(deleteAsyncAllCartItems({userId: currentUser._id}));
+      navigate("/success");
+    }
   }
 
   return (

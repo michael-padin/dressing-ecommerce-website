@@ -98,7 +98,7 @@ export const updateCart = async (req, res) => {
 };
 
 //DELETE CART
-export const deleteCart = async (req, res) => {
+export const deleteSingleCart = async (req, res) => {
   const {productId, userId, size, productPrice} = req.body;
   try {
     const result = await Cart.findOne({userId: userId});
@@ -119,6 +119,21 @@ export const deleteCart = async (req, res) => {
       const result = await Cart.findOne({userId: userId});
       res.status(200).json(result);
     };
+  } catch (error) {
+    res.status(500).json({message: "Something went wrong"});
+  }
+};
+
+
+export const deleteCart = async (req, res) => {
+  const { userId} = req.body;
+  
+  try {
+    await Cart.updateOne({userId: userId}, {$set: {'products': []}, totalPrice: 0}, {multi: true})
+    const result = await Cart.findOne({userId: userId});
+    res.status(200).json(result);
+
+
   } catch (error) {
     res.status(500).json({message: "Something went wrong"});
   }

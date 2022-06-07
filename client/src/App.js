@@ -13,7 +13,6 @@ import "./App.css";
 
 function App() {
   const user = useSelector((state) => state.user.currentUser);
-  const {products} = useSelector((state) => state.cart);
   
   return (
     <BrowserRouter>
