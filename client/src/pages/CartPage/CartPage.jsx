@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,19 +8,29 @@ import {  AiOutlineDelete } from "react-icons/ai";
 
 import {deleteAsyncCartItem, fetchAsyncCart,} from "../../features/cartSlice.js";
 import "./CartPage.scss";
-import { useEffect } from "react";
+import { useEffect, useState, CSSProperties } from "react";
+
+import BeatLoader from "react-spinners/BeatLoader";
+
 
 const CartPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { products, totalPrice } = useSelector((state) => state.cart);
+  const { products, totalPrice, status } = useSelector((state) => state.cart);
   const { currentUser } = useSelector((state) => state.user);
-
+  const [showMessage, setShowMessage] = useState('');
 
   useEffect(() => {
-    dispatch(fetchAsyncCart(currentUser._id));
+    currentUser && dispatch(fetchAsyncCart(currentUser._id));
   }, [])
   
+   useEffect(() => {
+    if (status === 'pending') {
+      setShowMessage("show-message");
+    } else if (status === 'fulfilled') {
+      setShowMessage(null);
+    }
+  }, [status]);
 
   const handleDelete = (size, productId, productTotalPrice) => {
     dispatch(
@@ -45,6 +56,7 @@ const CartPage = () => {
         </div>
         {products.map((product, index) => (
           <div className="bottom-cart-container" key={index}>
+
             <div className="cart-product-detail">
               <div className="cart-product-image-container">
                 <Link to={`/product/${product._id}`}>
@@ -85,6 +97,7 @@ const CartPage = () => {
                 </div>
               </div>
             </div>
+           
           </div>
         ))}
       </div>
@@ -109,6 +122,12 @@ const CartPage = () => {
           </div>
         </div>
       )}
+       <div className = {`${showMessage} cart-loader-wrapper`}>
+          {
+          status === 'pending' &&
+          <BeatLoader color= "#ff6280" loading={true}  size={15} />
+            }
+        </div>
     </div>
   );
 };

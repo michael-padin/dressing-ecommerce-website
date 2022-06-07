@@ -2,6 +2,7 @@
   min-height: 100vh;
   max-width: 1000px;
   margin: auto;
+  position: relative;
 }
 
 .cart-links {
@@ -42,6 +43,7 @@
 .bottom-cart-container {
   display: flex;
   flex-direction: row;
+  position: relative;
 }
 
 .cart-product-detail {
@@ -224,6 +226,26 @@
     height: 100%;
   }
 }
+
+.cart-loader-wrapper{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  width: 100%;
+  background-color: rgba(255,255,255,0.5);
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  display: none;
+}
+
+
+
+.show-message{
+  display: flex;
+}
+
 
 
 

@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {AiFillStar,AiOutlineStar,AiOutlineMinus,AiOutlinePlus,AiOutlineCloseCircle} from "react-icons/ai";
 import {MdOutlineClose} from "react-icons/md";
 
-import ClipLoader from "react-spinners/ClipLoader";
-import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 import BeatLoader from "react-spinners/BeatLoader";
 
 import {
